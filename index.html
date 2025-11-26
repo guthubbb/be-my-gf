@@ -35,10 +35,11 @@
         /* 按钮容器 */
         .btn-container {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             justify-content: center;
             align-items: center;
             gap: 20px;
+            width: 100%;
         }
 
         /* 按钮通用样式 */
@@ -50,6 +51,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
+            white-space: nowrap; /* 防止按钮里的文字换行 */
+            flex-shrink: 0;      /* 禁止按钮缩小，哪怕屏幕装不下了也要保持原大小 */
         }
 
         /* "和好"按钮样式 */
@@ -159,4 +162,5 @@
         });
     </script>
 </body>
+
 </html>
