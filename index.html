@@ -120,28 +120,42 @@
         ];
 
         let clickCount = 0;
-        let fontSize = 18; // 初始字体大小
+        let yesFontSize = 18; // "和好" 初始大小
+        let noFontSize = 18;  // "不要" 初始大小
 
         // 点击“不要”按钮的逻辑
         noBtn.addEventListener('click', () => {
             clickCount++;
-            
-            // 1. 改变“不要”按钮的文字
-            // 如果点完了列表里的词，就一直显示最后一个
+
+            // 1. 修改文案
             if (clickCount < noTexts.length) {
                 noBtn.innerText = noTexts[clickCount];
             } else {
                 noBtn.innerText = noTexts[noTexts.length - 1];
             }
 
-            // 2. 让“和好”按钮变大
-            fontSize += 20; // 每次点击字体增加20px
-            yesBtn.style.fontSize = fontSize + 'px';
-            
-            // 也可以增加按钮的内边距，让它看起来更庞大
-            let currentPadding = 15 + clickCount * 10;
-            yesBtn.style.padding = `${currentPadding}px ${currentPadding * 2}px`;
+            // 2. "和好" 变大逻辑 (线性增长)
+            yesFontSize += 20; 
+            yesBtn.style.fontSize = yesFontSize + 'px';
+            // 同时也增加一点 padding 让它更霸气
+            let yesPadding = 15 + clickCount * 5;
+            yesBtn.style.padding = `${yesPadding}px ${yesPadding * 2}px`;
 
+            // 3. "不要" 变小逻辑 (线性衰减)
+            // 每次减小 2px，或者你可以改成除法让它变小得更快
+            noFontSize -= 2; 
+
+            // === 下溢保护 (Underflow Protection) ===
+            // 这一点对嵌入式开发很重要：防止变量越界
+            if (noFontSize < 5) {
+                noFontSize = 1; // 最小保留 1px，几乎看不见但逻辑存在
+                noBtn.style.display = 'none'; // 或者干脆直接隐藏掉，杀人诛心
+            } else {
+                noBtn.style.fontSize = noFontSize + 'px';
+                // 顺便减小 padding，让按钮整体缩小
+                let noPadding = Math.max(2, 15 - clickCount * 2); // 也是做个最小值钳位
+                noBtn.style.padding = `${noPadding}px ${noPadding * 2}px`;
+            }
             // 更换一下表情包（可选，显得更可怜）
             if(clickCount === 1) {
                 // 可以在这里换成流泪的图片链接
@@ -164,3 +178,4 @@
 </body>
 
 </html>
+
