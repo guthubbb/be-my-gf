@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我们可以和好吗？</title>
+    <style>
+        /* 页面整体样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #FCE4EC; /* 粉色背景 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* 防止按钮变大时出现滚动条 */
+        }
+
+        /* 熊猫图片的样式 */
+        .gif-container img {
+            width: 200px; /* 图片大小，可按需修改 */
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        /* 提问文字 */
+        h1 {
+            color: #5D4037;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        /* 按钮容器 */
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* 按钮通用样式 */
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        /* "和好"按钮样式 */
+        #yesBtn {
+            background-color: #FF80AB;
+            color: white;
+            z-index: 100; /* 保证变大时覆盖其他内容 */
+        }
+
+        /* "不要"按钮样式 */
+        #noBtn {
+            background-color: #90A4AE;
+            color: white;
+        }
+
+        /* 成功后的文字样式 */
+        .success-message {
+            font-size: 30px;
+            color: #E91E63;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        /* 隐藏元素的类 */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 这里的图片链接我用了网络图，你可以替换成你自己的表情包链接 -->
+    <div class="gif-container" id="gifContainer">
+        <!-- 初始表情包：委屈巴巴 -->
+        <img id="pandaImg" src="./assets/can_hehao.jpg" alt="Cute Panda">
+    </div>
+
+    <h1 id="question">可以跟我和好吗？</h1>
+
+    <div class="btn-container">
+        <button id="yesBtn">和好</button>
+        <button id="noBtn">不要</button>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const question = document.getElementById('question');
+        const gifContainer = document.getElementById('gifContainer');
+        const pandaImg = document.getElementById('pandaImg');
+
+        // 这里是点击“不要”后，按钮上显示的文字列表
+        // 对应视频里的内容
+        const noTexts = [
+            "不要", 
+            "对不起，我知道错了", 
+            "零花钱都给你", 
+            "欲擒故纵，我懂", 
+            "原谅我嘛", 
+            "不能不和好", 
+            "求求你了",
+            "别生气了好不好",
+            "行行行，都依你"
+        ];
+
+        let clickCount = 0;
+        let fontSize = 18; // 初始字体大小
+
+        // 点击“不要”按钮的逻辑
+        noBtn.addEventListener('click', () => {
+            clickCount++;
+            
+            // 1. 改变“不要”按钮的文字
+            // 如果点完了列表里的词，就一直显示最后一个
+            if (clickCount < noTexts.length) {
+                noBtn.innerText = noTexts[clickCount];
+            } else {
+                noBtn.innerText = noTexts[noTexts.length - 1];
+            }
+
+            // 2. 让“和好”按钮变大
+            fontSize += 20; // 每次点击字体增加20px
+            yesBtn.style.fontSize = fontSize + 'px';
+            
+            // 也可以增加按钮的内边距，让它看起来更庞大
+            let currentPadding = 15 + clickCount * 10;
+            yesBtn.style.padding = `${currentPadding}px ${currentPadding * 2}px`;
+
+            // 更换一下表情包（可选，显得更可怜）
+            if(clickCount === 1) {
+                // 可以在这里换成流泪的图片链接
+                pandaImg.src = "./assets/buyao.gif"; 
+            }
+        });
+
+        // 点击“和好”按钮的逻辑
+        yesBtn.addEventListener('click', () => {
+            // 清空页面内容
+            document.body.innerHTML = `
+                <div style="display:flex; flex-direction:column; align-items:center;">
+                    <!-- 可以在这里换成两只熊抱在一起的图片 -->
+                    <img src="./assets/hehao.gif" style="width:200px; border-radius:10px;">
+                    <h1 class="success-message">!!! 喜欢你 !! ( > ◡ < ) ♡</h1>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
